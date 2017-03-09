@@ -1,0 +1,122 @@
+/*font*/
+@font-face { font-family: KC; src: url('fonts/KeepCalm-M.ttf'); }
+@font-face { font-family: spring; src: url('fonts/spring.ttf'); }
+
+/*class*/
+.parallax-window-top {
+    min-height: 800px;
+    background: transparent;
+    opacity: 1;
+}
+.parallax-window-bot {
+    min-height: 900px;
+    background: transparent;
+    opacity: 1;
+}
+.parallax-window {
+    min-height: 700px;
+    background: transparent;
+    opacity: 1;
+}
+
+.regular_on_black{
+	min-height: 130px;
+	/*background: rgba(0, 0, 0, 0.5);*/
+	color: white;
+	/*font-family: "Segoe UI",Arial,sans-serif;*/
+	font-family: "KC";
+	/*position: absolute;*/
+	/*bottom: 0px;*/
+/*	padding-bottom: 0px;
+	width: 100%;*/
+	padding-top: 150px;
+	font-size: 30px;
+	text-align: center;
+	padding-left: 100px;
+	padding-right: 100px;
+	/*opacity: .5;*/
+}
+.regular_on_white{
+	min-height: 130px;
+	/*background: rgba(255,255,255, 0.5);*/
+	color: black;
+	/*font-family: "Segoe UI",Arial,sans-serif;*/
+	font-family: "KC";
+	/*position: absolute;*/
+	/*bottom: 0px;*/
+/*	padding-bottom: 0px;
+	width: 100%;*/
+	padding-top: 150px;
+	font-size: 30px;
+	text-align: center;
+	padding-left: 100px;
+	padding-right: 100px;
+	/*opacity: .5;*/
+}
+
+.messages{
+	font-family: "KC";
+	text-align: 'center';
+	font-size: 20px;
+}
+
+.Row
+{
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed; /*Optional*/
+    border-spacing: 30px; /*Optional*/
+    padding: 40px, 40px;
+    text-align: center;
+}
+.Column
+{
+    display: table-cell;
+    text-align: center;
+    font-family: "KC";
+	font-size: 20px;
+	font-size: 1.5vw;
+	vertical-align: middle;
+}
+
+/*id*/
+#hello{
+	font-size: 80px;
+	position: absolute;
+	left: 450px;
+	padding-top: 80px;
+	font-family: 'courier new';
+
+}
+#hbd{
+	font-size: 80px;
+	/*position: absolute;*/
+	/*left: 450px;*/
+	text-align: center;
+	color:white;
+	padding-top: 180px;
+	font-family: 'spring';
+	padding-bottom: 200px;
+}
+#edyay{
+	width: 50%;
+	padding-top: 50px;
+}
+
+#names{
+	font-family: 'spring';
+	padding-top: 15px;
+	font-size: 25px;
+	padding-bottom: 10px;
+}
+#fat{
+	/*font-size: 15px;*/
+	font-size: 1.2vw;
+}
+#medium{
+	/*font-size: 18px;*/
+	font-size: 1.5vw;
+}
+#small{
+	font-size: 2vw;
+}
