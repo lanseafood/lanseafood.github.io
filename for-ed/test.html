@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Clustering</title>
+    <link rel="stylesheet" href="css/map.css">
+  </head>
+  <body>
+  	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map"></div>
+    <script>
+
+      function initMap() {
+      	var styledMapType = new google.maps.StyledMapType(
+			[
+			  {
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#f5f5f5"
+			      }
+			    ]
+			  },
+			  {
+			    "elementType": "labels.icon",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#616161"
+			      }
+			    ]
+			  },
+			  {
+			    "elementType": "labels.text.stroke",
+			    "stylers": [
+			      {
+			        "color": "#f5f5f5"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "administrative.land_parcel",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#bdbdbd"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#eeeeee"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#757575"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi.business",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi.park",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#e5e5e5"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi.park",
+			    "elementType": "labels.text",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "poi.park",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#9e9e9e"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#ffffff"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.arterial",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.arterial",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#757575"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.highway",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#dadada"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.highway",
+			    "elementType": "labels",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.highway",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#616161"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.local",
+			    "stylers": [
+			      {
+			        "visibility": "off"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "road.local",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#9e9e9e"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "transit.line",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#e5e5e5"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "transit.station",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#eeeeee"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "water",
+			    "elementType": "geometry",
+			    "stylers": [
+			      {
+			        "color": "#c9c9c9"
+			      }
+			    ]
+			  },
+			  {
+			    "featureType": "water",
+			    "elementType": "labels.text.fill",
+			    "stylers": [
+			      {
+			        "color": "#9e9e9e"
+			      }
+			    ]
+			  }
+			],
+            {name: 'Styled Map'});
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 14.5994, lng:  -28.6731},
+          zoom: 2,
+          mapTypeControlOptions: {
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                    'styled_map']
+          }
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locationsPre2018.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+        //Associate the styled map with the MapTypeId and set it to display.
+       	map.mapTypes.set('styled_map', styledMapType);
+       	map.setMapTypeId('styled_map');
+
+//SEARCH BAR
+       	// Create the search box and link it to the UI element.
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        // var markers = [];
+        // // Listen for the event fired when the user selects a prediction and retrieve
+        // // more details for that place.
+        // searchBox.addListener('places_changed', function() {
+        //   var places = searchBox.getPlaces();
+
+        //   if (places.length == 0) {
+        //     return;
+        //   }
+
+        //   // // Clear out the old markers.
+        //   markers.forEach(function(marker) {
+        //     marker.setMap(null);
+        //   });
+        //   markers = [];
+
+        //   // For each place, get the icon, name and location.
+        //   var bounds = new google.maps.LatLngBounds();
+        //   places.forEach(function(place) {
+        //     if (!place.geometry) {
+        //       console.log("Returned place contains no geometry");
+        //       return;
+        //     }
+        //     var icon = {
+        //       url: place.icon,
+        //       size: new google.maps.Size(71, 71),
+        //       origin: new google.maps.Point(0, 0),
+        //       anchor: new google.maps.Point(17, 34),
+        //       scaledSize: new google.maps.Size(25, 25)
+        //     };
+
+        //     // Create a marker for each place.
+        //     markers.push(new google.maps.Marker({
+        //       map: map,
+        //       icon: icon,
+        //       title: place.name,
+        //       position: place.geometry.location
+        //     }));
+
+        //     if (place.geometry.viewport) {
+        //       // Only geocodes have viewport.
+        //       bounds.union(place.geometry.viewport);
+        //     } else {
+        //       bounds.extend(place.geometry.location);
+        //     }
+        //   });
+        //   map.fitBounds(bounds);
+        // });
+
+      } //end of function
+      
+
+      var locationsPre2018 = [
+      	//2016
+        // {lat: 36.169941, lng: -115.13983}, //las vegas
+        // {lat: 33.6803, lng: -116.173894}, //coachella
+        {lat: 51.178363, lng: -115.570769}, //banff
+        {lat: 9.431868, lng: -84.161908}, // COSTA RICA: quepos
+        {lat: 10.467834, lng: -84.642681}, //COSTA RICA: la fortuna
+        {lat: 10.274968, lng: -84.82551}, //COSTA RICA: monte verde    
+      //2017
+      	{lat: 36.169941, lng: -115.13983}, //las vegas
+        {lat: 33.6803, lng: -116.173894}, //coachella
+        {lat: 22.09644, lng: -159.526124}, //kuaai
+        {lat: 47.60621, lng: -122.332071}, // seattle
+        {lat: 45.512231, lng: -122.658719}, //portland
+        {lat: 28.538336, lng: -81.379236}, //orlandO, FL
+        {lat: 38.297538, lng: -122.286865}, //napa
+        {lat: 30.2672, lng: -97.7431}, //austin
+        {lat: 40.712775, lng: -74.005973}, //NEW YORK: 
+        {lat: 64.146582, lng: -21.942635}, //ICELAND: reykjavik
+        {lat: 63.418632, lng: -19.006048}, //ICELAND: vik
+        {lat: 63.909519, lng: -16.707199}, //ICELAND: hof
+        {lat: 10.315699, lng: 123.885437}, //PHILIPPINES: cebu
+        {lat: 9.30684, lng: 123.305447}, //PHILIPPINES: dumaguete
+      //2018
+        {lat: 25.032964, lng: 121.565427}, //TAIWAN: taipei
+        {lat: 25.110385, lng: 121.845794}, //TAIWAN: jiu fen
+        {lat: 39.9526, lng: -75.1652}, //philly
+        {lat: 51.507351, lng: -0.127758}, //UK: london
+        {lat: 55.953252, lng: -3.188267}, //UK: edinborough
+        {lat: 57.24269, lng: -6.188241}, //SCOTLAND: isle of skye
+        {lat: 57.412474, lng: -6.196023}, //SCOTLAND: portree
+        {lat: 41.878114, lng: -87.629798}, //CHICAGO: 
+        // {lat: 40.712775, lng: -74.005973}, //NEW YORK: 
+        {lat: 27.950575, lng: -82.457178} //florida :tampa
+        // {lat: 0, lng: 0}, //ICELAND: 
+        // {lat: 0, lng: 0}, //PHILIPPINES: 
+        // {lat: 0, lng: 0}, //PHILIPPINES: 
+        // {lat: 0, lng: 0}, //PHILIPPINES: 
+        // {lat: 0, lng: 0}, //PHILIPPINES: 
+        // {lat: 0, lng: 0} //PHILIPPINES: 
+      ]
+
+    
+
+        // Create a map object, and include the MapTypeId to add
+        // to the map type control.
+
+
+        
+      
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF7CTaItLONW11a65K67J3lGPNZ2ra1BU&callback=initMap">
+    </script>
+  </body>
+</html>
+
+<!-- https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDF7CTaItLONW11a65K67J3lGPNZ2ra1BU&center=38.84958857932401,-120.76765992340324&zoom=6&format=png&maptype=roadmap&style=element:geometry%7Ccolor:0xf5f5f5&style=element:labels.icon%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x616161&style=element:labels.text.stroke%7Ccolor:0xf5f5f5&style=feature:administrative.land_parcel%7Celement:labels.text.fill%7Ccolor:0xbdbdbd&style=feature:poi%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:poi.business%7Cvisibility:off&style=feature:poi.park%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&style=feature:road%7Celement:labels.icon%7Cvisibility:off&style=feature:road.arterial%7Cvisibility:off&style=feature:road.arterial%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:road.highway%7Celement:geometry%7Ccolor:0xdadada&style=feature:road.highway%7Celement:labels%7Cvisibility:off&style=feature:road.highway%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:road.local%7Cvisibility:off&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:transit%7Cvisibility:off&style=feature:transit.line%7Celement:geometry%7Ccolor:0xe5e5e5&style=feature:transit.station%7Celement:geometry%7Ccolor:0xeeeeee&style=feature:water%7Celement:geometry%7Ccolor:0xc9c9c9&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&size=480x360
+ -->
+
+<!-- AIzaSyDF7CTaItLONW11a65K67J3lGPNZ2ra1BU -->
