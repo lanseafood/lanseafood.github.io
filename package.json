@@ -1,0 +1,17 @@
+{
+  "name": "lanseafood-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website with rotating cube and 3D carousel",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "http-server -p 3000 -o",
+    "dev": "npm run build && concurrently \"npm run watch\" \"npm run serve\""
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "http-server": "^14.1.1",
+    "concurrently": "^8.2.2"
+  }
+}
+
