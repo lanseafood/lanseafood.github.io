@@ -1,8 +1,5 @@
-"use strict";
 // ConnectBackground - Social/network themed background for connect page
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConnectBackground = void 0;
-class ConnectBackground {
+export class ConnectBackground {
     constructor(container) {
         this.container = container;
         this.init();
@@ -72,5 +69,4 @@ class ConnectBackground {
         this.container.innerHTML = '';
     }
 }
-exports.ConnectBackground = ConnectBackground;
 //# sourceMappingURL=ConnectBackground.js.map

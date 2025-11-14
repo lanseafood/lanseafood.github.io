@@ -1,8 +1,5 @@
-"use strict";
 // ArtBackground - Creative/artistic themed background for art page
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArtBackground = void 0;
-class ArtBackground {
+export class ArtBackground {
     constructor(container) {
         this.container = container;
         this.init();
@@ -45,5 +42,4 @@ class ArtBackground {
         this.container.innerHTML = '';
     }
 }
-exports.ArtBackground = ArtBackground;
 //# sourceMappingURL=ArtBackground.js.map

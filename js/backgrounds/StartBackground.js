@@ -1,8 +1,5 @@
-"use strict";
 // StartBackground - Game-style background with clouds and grass for home page
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StartBackground = void 0;
-class StartBackground {
+export class StartBackground {
     constructor(container) {
         this.cloud1 = null;
         this.cloud2 = null;
@@ -203,5 +200,4 @@ class StartBackground {
         this.container.innerHTML = '';
     }
 }
-exports.StartBackground = StartBackground;
 //# sourceMappingURL=StartBackground.js.map
