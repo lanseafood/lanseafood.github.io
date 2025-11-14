@@ -26,6 +26,8 @@ body {
 	z-index: -1;
 	pointer-events: none;
 	overflow: hidden;
+	opacity: 1;
+	transition: opacity 0.8s ease-in-out;
 }
 
 .background-container {
