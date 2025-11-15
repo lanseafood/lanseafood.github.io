@@ -22,9 +22,9 @@ export class StartBackground {
     this.container.appendChild(sky);
 
     // Clouds
-    this.cloud1 = this.createCloud(-200, '20px', '128px', '64px', 0.3, 1);
-    this.cloud2 = this.createCloud(-150, '32px', '96px', '48px', 0.25, 0.7);
-    this.cloud3 = this.createCloud(-100, '16px', '112px', '56px', 0.2, 0.8);
+    this.cloud1 = this.createCloud(-200, '80px', '128px', '64px', 0.3, 1);
+    this.cloud2 = this.createCloud(-150, '92px', '96px', '48px', 0.25, 0.7);
+    this.cloud3 = this.createCloud(-100, '76px', '112px', '56px', 0.2, 0.8);
     this.container.appendChild(this.cloud1);
     this.container.appendChild(this.cloud2);
     this.container.appendChild(this.cloud3);

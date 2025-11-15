@@ -5,12 +5,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "serve": "http-server -p 3000 -o",
+    "serve": "live-server --port=3000 --open=/index.html --watch=js,src --no-css-inject --wait=500",
     "dev": "npm run build && concurrently \"npm run watch\" \"npm run serve\""
   },
   "devDependencies": {
     "typescript": "^5.3.3",
-    "http-server": "^14.1.1",
+    "live-server": "^1.2.2",
     "concurrently": "^8.2.2"
   }
 }

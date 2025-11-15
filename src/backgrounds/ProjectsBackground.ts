@@ -67,13 +67,16 @@ export class ProjectsBackground {
     const moonSurface = document.createElement('div');
     moonSurface.className = 'moon-surface';
     moonSurface.style.position = 'absolute';
-    moonSurface.style.left = '0';
-    moonSurface.style.right = '0';
-    moonSurface.style.bottom = '-10vh';
-    moonSurface.style.height = '40vh';
-    moonSurface.style.borderRadius = '50% 50% 0 0';
+    moonSurface.style.left = '-100px';
+    moonSurface.style.right = '-100px';
+    moonSurface.style.bottom = '0';
+    moonSurface.style.height = '30vh';
     moonSurface.style.overflow = 'hidden';
     moonSurface.style.background = '#d3d3d3';
+    
+    // Create rounded left and right edges using border-radius
+    // 50% border-radius on left and right creates a pill/capsule shape
+    moonSurface.style.borderRadius = '50% 50% 0% 0%';
 
     // Texture layer using CSS gradient for a subtle texture effect
     const textureLayer = document.createElement('div');
@@ -175,8 +178,12 @@ export class ProjectsBackground {
     this.container.appendChild(moonSurface);
 
     // Create two satellites with different paths and speeds
-    this.satellite1 = this.createSatellite(-50, 25, 0.15, 0.02);
-    this.satellite2 = this.createSatellite(-50, 65, 0.12, -0.015);
+    // Start in the middle area of the page (30-50% of screen width, 30-50% vertical)
+    const screenWidth = window.innerWidth;
+    const middleStartX1 = screenWidth * 0.3;
+    const middleStartX2 = screenWidth * 0.35;
+    this.satellite1 = this.createSatellite(middleStartX1, 35, 0.15, 0.02);
+    this.satellite2 = this.createSatellite(middleStartX2, 45, 0.12, -0.015);
     this.container.appendChild(this.satellite1);
     this.container.appendChild(this.satellite2);
 

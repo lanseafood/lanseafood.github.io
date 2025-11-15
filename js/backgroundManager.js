@@ -88,7 +88,9 @@ $(document).ready(function () {
         document.body.appendChild(bgContainer);
     }
     const bgManager = new BackgroundManager('background-container');
-    // Set initial background to home (without transition)
+    // Store current background type in sessionStorage to restore after reload
+    const storedBgType = sessionStorage.getItem('currentBackground') || 'home';
+    // Set initial background based on stored type (without transition)
     const bgContainer = document.getElementById('background-container');
     if (bgContainer) {
         const initialLayer = document.createElement('div');
@@ -98,11 +100,33 @@ $(document).ready(function () {
         initialLayer.style.opacity = '1';
         initialLayer.style.pointerEvents = 'none';
         bgContainer.appendChild(initialLayer);
-        const initialBackground = new StartBackground(initialLayer);
+        let initialBackground;
+        switch (storedBgType) {
+            case 'home':
+                initialBackground = new StartBackground(initialLayer);
+                break;
+            case 'projects':
+                initialBackground = new ProjectsBackground(initialLayer);
+                break;
+            case 'art':
+                initialBackground = new ArtBackground(initialLayer);
+                break;
+            case 'connect':
+                initialBackground = new ConnectBackground(initialLayer);
+                break;
+            default:
+                initialBackground = new StartBackground(initialLayer);
+        }
         initialLayer.background = initialBackground;
         bgManager.currentLayer = initialLayer;
         bgManager.currentBackground = initialBackground;
     }
+    // Store background type when switching (so it persists after reload)
+    const originalSwitch = bgManager.switchToBackground.bind(bgManager);
+    bgManager.switchToBackground = function (type) {
+        sessionStorage.setItem('currentBackground', type);
+        originalSwitch(type);
+    };
     // Switch backgrounds on nav click
     $('.home').on('click', () => bgManager.switchToBackground('home'));
     $('.proj').on('click', () => bgManager.switchToBackground('projects'));
