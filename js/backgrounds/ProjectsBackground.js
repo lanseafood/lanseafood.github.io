@@ -78,35 +78,65 @@ export class ProjectsBackground {
         textureLayer.style.backgroundSize = '64px 64px, 48px 48px, 56px 56px';
         textureLayer.style.opacity = '0.7';
         moonSurface.appendChild(textureLayer);
-        // Create craters
-        const craterConfigs = [
-            { left: '15%', top: '30%', size: '60px', depth: '8px' },
-            { left: '35%', top: '50%', size: '45px', depth: '6px' },
-            { left: '55%', top: '25%', size: '50px', depth: '7px' },
-            { left: '70%', top: '45%', size: '40px', depth: '5px' },
-            { left: '85%', top: '35%', size: '55px', depth: '7px' },
-            { left: '25%', top: '65%', size: '35px', depth: '4px' },
-            { left: '60%', top: '70%', size: '42px', depth: '6px' },
-            { left: '45%', top: '15%', size: '38px', depth: '5px' },
-        ];
-        craterConfigs.forEach((config) => {
-            const crater = this.createCrater(config);
+        // Add craters sporadically across the moon surface
+        const numCraters = 6 + Math.floor(Math.random() * 4); // 6-9 craters
+        for (let i = 0; i < numCraters; i++) {
+            const crater = this.createCrater();
+            // Position craters randomly across the width, mostly in the lower 70% of the surface
+            const leftPercent = Math.random() * 100;
+            const topPercent = 20 + Math.random() * 60; // Between 20% and 80% from top
+            crater.style.left = `${leftPercent}%`;
+            crater.style.top = `${topPercent}%`;
+            crater.style.transform = 'translate(-50%, -50%)';
+            // Random scale for variety (0.6x to 1.2x)
+            const scale = 0.6 + Math.random() * 0.6;
+            crater.style.transform += ` scale(${scale})`;
             moonSurface.appendChild(crater);
-        });
+        }
+        // Add rocks sporadically across the moon surface
+        const numRocks = 8 + Math.floor(Math.random() * 5); // 8-12 rocks
+        for (let i = 0; i < numRocks; i++) {
+            const rock = this.createRock();
+            // Position rocks randomly across the width, mostly in the lower 70% of the surface
+            const leftPercent = Math.random() * 100;
+            const topPercent = 20 + Math.random() * 60; // Between 20% and 80% from top
+            rock.style.left = `${leftPercent}%`;
+            rock.style.top = `${topPercent}%`;
+            rock.style.transform = 'translate(-50%, -50%)';
+            // Random scale for variety (0.7x to 1.3x)
+            const scale = 0.7 + Math.random() * 0.6;
+            rock.style.transform += ` scale(${scale})`;
+            moonSurface.appendChild(rock);
+        }
         return moonSurface;
     }
-    createCrater(config) {
-        const crater = document.createElement('div');
-        crater.style.position = 'absolute';
-        crater.style.left = config.left;
-        crater.style.top = config.top;
-        crater.style.width = config.size;
-        crater.style.height = config.size;
-        crater.style.borderRadius = '50%';
-        crater.style.background = `radial-gradient(circle at 30% 30%, rgba(180, 180, 180, 0.6), rgba(150, 150, 150, 0.8))`;
-        crater.style.boxShadow = `inset 0 0 ${config.depth} rgba(100, 100, 100, 0.5)`;
-        crater.style.transform = 'translate(-50%, -50%)';
-        return crater;
+    createCrater() {
+        const craterContainer = document.createElement('div');
+        craterContainer.style.position = 'absolute';
+        craterContainer.style.width = '180px';
+        craterContainer.style.height = '80px';
+        craterContainer.style.pointerEvents = 'none';
+        const craterImg = document.createElement('img');
+        craterImg.src = 'images/crater.svg';
+        craterImg.style.width = '100%';
+        craterImg.style.height = '100%';
+        craterImg.style.display = 'block';
+        craterContainer.appendChild(craterImg);
+        return craterContainer;
+    }
+    createRock() {
+        const rockContainer = document.createElement('div');
+        rockContainer.style.position = 'absolute';
+        rockContainer.style.width = '64px';
+        rockContainer.style.height = '48px';
+        rockContainer.style.pointerEvents = 'none';
+        const rockImg = document.createElement('img');
+        rockImg.src = 'images/rock.svg';
+        rockImg.style.width = '100%';
+        rockImg.style.height = '100%';
+        rockImg.style.display = 'block';
+        rockContainer.appendChild(rockImg);
+        return rockContainer;
     }
     init() {
         this.container.innerHTML = '';

@@ -1,0 +1,23 @@
+<svg
+  width="180"
+  height="80"
+  viewBox="0 0 180 80"
+  xmlns="http://www.w3.org/2000/svg"
+  shape-rendering="crispEdges">
+
+  <!-- outer rim -->
+  <rect x="10" y="38" width="160" height="22" fill="#6a717b"/>
+  <rect x="18" y="32" width="144" height="10" fill="#707781"/>
+
+  <!-- inner lit -->
+  <rect x="26" y="42" width="128" height="12" fill="#5f6671"/>
+  <rect x="32" y="44" width="116" height="10" fill="#585f69"/>
+
+  <!-- dark interior -->
+  <rect x="44" y="48" width="92" height="10" fill="#484e57"/>
+  <rect x="48" y="50" width="84" height="8" fill="#40454e"/>
+
+  <!-- right shadow -->
+  <rect x="110" y="42" width="24" height="12" fill="#505762"/>
+  <rect x="118" y="44" width="16" height="10" fill="#454b55"/>
+</svg>
