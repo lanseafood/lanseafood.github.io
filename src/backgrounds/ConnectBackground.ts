@@ -17,7 +17,7 @@ export class ConnectBackground {
     gradient.className = 'background-gradient';
     gradient.style.position = 'absolute';
     gradient.style.inset = '0';
-    gradient.style.background = 'linear-gradient(180deg, #ffecd2 0%, #fcb69f 100%)';
+    gradient.style.background = 'linear-gradient(180deg, rgb(254, 200, 91) 0%, rgb(247, 104, 166) 100%)';
     this.container.appendChild(gradient);
 
     // Network/connection lines pattern
