@@ -72,7 +72,7 @@ export class ProjectsBackground {
     moonSurface.style.bottom = '0';
     moonSurface.style.height = '30vh';
     moonSurface.style.overflow = 'hidden';
-    moonSurface.style.background = '#d3d3d3';
+    moonSurface.style.background = 'rgba(243, 243, 243, 0.79)';
     
     // Create rounded left and right edges using border-radius
     // 50% border-radius on left and right creates a pill/capsule shape
@@ -83,7 +83,7 @@ export class ProjectsBackground {
     textureLayer.style.position = 'absolute';
     textureLayer.style.inset = '0';
     textureLayer.style.backgroundImage = `
-      radial-gradient(circle at 20% 30%, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
+      radial-gradient(circle at 20% 30%, rgba(101, 101, 101, 0.3) 1px, transparent 1px),
       radial-gradient(circle at 60% 70%, rgba(180, 180, 180, 0.3) 1px, transparent 1px),
       radial-gradient(circle at 80% 20%, rgba(190, 190, 190, 0.2) 1px, transparent 1px)
     `;
@@ -92,12 +92,12 @@ export class ProjectsBackground {
     moonSurface.appendChild(textureLayer);
 
     // Add craters sporadically across the moon surface
-    const numCraters = 6 + Math.floor(Math.random() * 4); // 6-9 craters
+    const numCraters = 9 + Math.floor(Math.random() * 4); // 6-9 craters
     for (let i = 0; i < numCraters; i++) {
       const crater = this.createCrater();
       // Position craters randomly across the width, mostly in the lower 70% of the surface
       const leftPercent = Math.random() * 100;
-      const topPercent = 20 + Math.random() * 60; // Between 20% and 80% from top
+      const topPercent = 30 + Math.random() * 60; // Between 20% and 80% from top
       crater.style.left = `${leftPercent}%`;
       crater.style.top = `${topPercent}%`;
       crater.style.transform = 'translate(-50%, -50%)';
@@ -108,12 +108,12 @@ export class ProjectsBackground {
     }
 
     // Add rocks sporadically across the moon surface
-    const numRocks = 8 + Math.floor(Math.random() * 5); // 8-12 rocks
+    const numRocks = 14 + Math.floor(Math.random() * 5); // 8-12 rocks
     for (let i = 0; i < numRocks; i++) {
       const rock = this.createRock();
       // Position rocks randomly across the width, mostly in the lower 70% of the surface
       const leftPercent = Math.random() * 100;
-      const topPercent = 20 + Math.random() * 60; // Between 20% and 80% from top
+      const topPercent = 30 + Math.random() * 60; // Between 20% and 80% from top
       rock.style.left = `${leftPercent}%`;
       rock.style.top = `${topPercent}%`;
       rock.style.transform = 'translate(-50%, -50%)';
@@ -158,6 +158,23 @@ export class ProjectsBackground {
     rockContainer.appendChild(rockImg);
     
     return rockContainer;
+  }
+
+  private createMoonbase(): HTMLElement {
+    const moonbaseContainer = document.createElement('div');
+    moonbaseContainer.style.position = 'absolute';
+    moonbaseContainer.style.width = '200px';
+    moonbaseContainer.style.height = '140px';
+    moonbaseContainer.style.pointerEvents = 'none';
+    
+    const moonbaseImg = document.createElement('img');
+    moonbaseImg.src = 'images/moonbase.svg';
+    moonbaseImg.style.width = '100%';
+    moonbaseImg.style.height = '100%';
+    moonbaseImg.style.display = 'block';
+    moonbaseContainer.appendChild(moonbaseImg);
+    
+    return moonbaseContainer;
   }
 
   private init(): void {
@@ -210,6 +227,18 @@ export class ProjectsBackground {
     // Lunar surface at the bottom
     const moonSurface = this.createMoonSurface();
     this.container.appendChild(moonSurface);
+
+    // Add moonbase at fixed position: 1/3 across screen, positioned on top of moon surface
+    // Position it outside moonSurface container so it doesn't get clipped by overflow: hidden
+    const moonbase = this.createMoonbase();
+    moonbase.style.left = '33.33%';
+    // Position at bottom of screen, accounting for moon surface height (30vh)
+    // Place it at 15vh from bottom (50% of 30vh moon surface height)
+    moonbase.style.bottom = '30vh';
+    moonbase.style.transform = 'translate(-50%, 50%)'; // Center horizontally, align bottom
+    const scale = 5;
+    moonbase.style.transform += ` scale(${scale})`;
+    this.container.appendChild(moonbase);
 
     // Create two satellites with different paths and speeds
     // Start in the middle area of the page (30-50% of screen width, 30-50% vertical)
