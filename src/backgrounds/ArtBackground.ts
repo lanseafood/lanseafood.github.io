@@ -29,7 +29,7 @@ export class ArtBackground {
     shapes.style.overflow = 'hidden';
     
     // Create floating abstract shapes
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 17; i++) {
       const shape = document.createElement('div');
       const size = Math.random() * 150 + 50;
       const colors = ['rgba(255, 107, 107, 0.3)', 'rgba(255, 206, 84, 0.3)', 'rgba(75, 192, 192, 0.3)', 'rgba(255, 159, 64, 0.3)'];

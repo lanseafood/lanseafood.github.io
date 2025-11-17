@@ -62,7 +62,7 @@ export class ProjectsBackground {
         moonSurface.style.bottom = '0';
         moonSurface.style.height = '30vh';
         moonSurface.style.overflow = 'hidden';
-        moonSurface.style.background = '#d3d3d3';
+        moonSurface.style.background = 'rgba(243, 243, 243, 0.79)';
         // Create rounded left and right edges using border-radius
         // 50% border-radius on left and right creates a pill/capsule shape
         moonSurface.style.borderRadius = '50% 50% 0% 0%';
@@ -71,42 +71,86 @@ export class ProjectsBackground {
         textureLayer.style.position = 'absolute';
         textureLayer.style.inset = '0';
         textureLayer.style.backgroundImage = `
-      radial-gradient(circle at 20% 30%, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
+      radial-gradient(circle at 20% 30%, rgba(101, 101, 101, 0.3) 1px, transparent 1px),
       radial-gradient(circle at 60% 70%, rgba(180, 180, 180, 0.3) 1px, transparent 1px),
       radial-gradient(circle at 80% 20%, rgba(190, 190, 190, 0.2) 1px, transparent 1px)
     `;
         textureLayer.style.backgroundSize = '64px 64px, 48px 48px, 56px 56px';
         textureLayer.style.opacity = '0.7';
         moonSurface.appendChild(textureLayer);
-        // Create craters
-        const craterConfigs = [
-            { left: '15%', top: '30%', size: '60px', depth: '8px' },
-            { left: '35%', top: '50%', size: '45px', depth: '6px' },
-            { left: '55%', top: '25%', size: '50px', depth: '7px' },
-            { left: '70%', top: '45%', size: '40px', depth: '5px' },
-            { left: '85%', top: '35%', size: '55px', depth: '7px' },
-            { left: '25%', top: '65%', size: '35px', depth: '4px' },
-            { left: '60%', top: '70%', size: '42px', depth: '6px' },
-            { left: '45%', top: '15%', size: '38px', depth: '5px' },
-        ];
-        craterConfigs.forEach((config) => {
-            const crater = this.createCrater(config);
+        // Add craters sporadically across the moon surface
+        const numCraters = 9 + Math.floor(Math.random() * 4); // 6-9 craters
+        for (let i = 0; i < numCraters; i++) {
+            const crater = this.createCrater();
+            // Position craters randomly across the width, mostly in the lower 70% of the surface
+            const leftPercent = Math.random() * 100;
+            const topPercent = 30 + Math.random() * 60; // Between 20% and 80% from top
+            crater.style.left = `${leftPercent}%`;
+            crater.style.top = `${topPercent}%`;
+            crater.style.transform = 'translate(-50%, -50%)';
+            // Random scale for variety (0.6x to 1.2x)
+            const scale = 0.6 + Math.random() * 0.6;
+            crater.style.transform += ` scale(${scale})`;
             moonSurface.appendChild(crater);
-        });
+        }
+        // Add rocks sporadically across the moon surface
+        const numRocks = 14 + Math.floor(Math.random() * 5); // 8-12 rocks
+        for (let i = 0; i < numRocks; i++) {
+            const rock = this.createRock();
+            // Position rocks randomly across the width, mostly in the lower 70% of the surface
+            const leftPercent = Math.random() * 100;
+            const topPercent = 30 + Math.random() * 60; // Between 20% and 80% from top
+            rock.style.left = `${leftPercent}%`;
+            rock.style.top = `${topPercent}%`;
+            rock.style.transform = 'translate(-50%, -50%)';
+            // Random scale for variety (0.7x to 1.3x)
+            const scale = 0.7 + Math.random() * 0.6;
+            rock.style.transform += ` scale(${scale})`;
+            moonSurface.appendChild(rock);
+        }
         return moonSurface;
     }
-    createCrater(config) {
-        const crater = document.createElement('div');
-        crater.style.position = 'absolute';
-        crater.style.left = config.left;
-        crater.style.top = config.top;
-        crater.style.width = config.size;
-        crater.style.height = config.size;
-        crater.style.borderRadius = '50%';
-        crater.style.background = `radial-gradient(circle at 30% 30%, rgba(180, 180, 180, 0.6), rgba(150, 150, 150, 0.8))`;
-        crater.style.boxShadow = `inset 0 0 ${config.depth} rgba(100, 100, 100, 0.5)`;
-        crater.style.transform = 'translate(-50%, -50%)';
-        return crater;
+    createCrater() {
+        const craterContainer = document.createElement('div');
+        craterContainer.style.position = 'absolute';
+        craterContainer.style.width = '180px';
+        craterContainer.style.height = '80px';
+        craterContainer.style.pointerEvents = 'none';
+        const craterImg = document.createElement('img');
+        craterImg.src = 'images/crater.svg';
+        craterImg.style.width = '100%';
+        craterImg.style.height = '100%';
+        craterImg.style.display = 'block';
+        craterContainer.appendChild(craterImg);
+        return craterContainer;
+    }
+    createRock() {
+        const rockContainer = document.createElement('div');
+        rockContainer.style.position = 'absolute';
+        rockContainer.style.width = '64px';
+        rockContainer.style.height = '48px';
+        rockContainer.style.pointerEvents = 'none';
+        const rockImg = document.createElement('img');
+        rockImg.src = 'images/rock.svg';
+        rockImg.style.width = '100%';
+        rockImg.style.height = '100%';
+        rockImg.style.display = 'block';
+        rockContainer.appendChild(rockImg);
+        return rockContainer;
+    }
+    createMoonbase() {
+        const moonbaseContainer = document.createElement('div');
+        moonbaseContainer.style.position = 'absolute';
+        moonbaseContainer.style.width = '200px';
+        moonbaseContainer.style.height = '140px';
+        moonbaseContainer.style.pointerEvents = 'none';
+        const moonbaseImg = document.createElement('img');
+        moonbaseImg.src = 'images/moonbase.svg';
+        moonbaseImg.style.width = '100%';
+        moonbaseImg.style.height = '100%';
+        moonbaseImg.style.display = 'block';
+        moonbaseContainer.appendChild(moonbaseImg);
+        return moonbaseContainer;
     }
     init() {
         this.container.innerHTML = '';
@@ -152,6 +196,17 @@ export class ProjectsBackground {
         // Lunar surface at the bottom
         const moonSurface = this.createMoonSurface();
         this.container.appendChild(moonSurface);
+        // Add moonbase at fixed position: 1/3 across screen, positioned on top of moon surface
+        // Position it outside moonSurface container so it doesn't get clipped by overflow: hidden
+        const moonbase = this.createMoonbase();
+        moonbase.style.left = '33.33%';
+        // Position at bottom of screen, accounting for moon surface height (30vh)
+        // Place it at 15vh from bottom (50% of 30vh moon surface height)
+        moonbase.style.bottom = '30vh';
+        moonbase.style.transform = 'translate(-50%, 50%)'; // Center horizontally, align bottom
+        const scale = 5;
+        moonbase.style.transform += ` scale(${scale})`;
+        this.container.appendChild(moonbase);
         // Create two satellites with different paths and speeds
         // Start in the middle area of the page (30-50% of screen width, 30-50% vertical)
         const screenWidth = window.innerWidth;
