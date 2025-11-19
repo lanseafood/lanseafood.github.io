@@ -2,9 +2,7 @@
 
 export class StartBackground {
   private container: HTMLElement;
-  private cloud1: HTMLElement | null = null;
-  private cloud2: HTMLElement | null = null;
-  private cloud3: HTMLElement | null = null;
+  private clouds: HTMLElement[] = [];
   private animationFrameId: number | null = null;
 
   constructor(container: HTMLElement) {
@@ -21,13 +19,24 @@ export class StartBackground {
     sky.className = 'background-sky';
     this.container.appendChild(sky);
 
-    // Clouds
-    this.cloud1 = this.createCloud(-200, '80px', '128px', '64px', 0.3, 1);
-    this.cloud2 = this.createCloud(-150, '92px', '96px', '48px', 0.25, 0.7);
-    this.cloud3 = this.createCloud(-100, '76px', '112px', '56px', 0.2, 0.8);
-    this.container.appendChild(this.cloud1);
-    this.container.appendChild(this.cloud2);
-    this.container.appendChild(this.cloud3);
+    // Create 5 clouds with random starting positions spread across the screen
+    const screenWidth = window.innerWidth;
+    const cloudConfigs = [
+      { top: '80px', width: '128px', height: '64px', speed: 0.3, opacity: 1 },
+      { top: '92px', width: '96px', height: '48px', speed: 0.25, opacity: 0.7 },
+      { top: '76px', width: '112px', height: '56px', speed: 0.2, opacity: 0.8 },
+      { top: '100px', width: '104px', height: '52px', speed: 0.35, opacity: 0.9 },
+      { top: '68px', width: '120px', height: '60px', speed: 0.28, opacity: 0.75 }
+    ];
+
+    for (let i = 0; i < cloudConfigs.length; i++) {
+      const config = cloudConfigs[i];
+      // Spread clouds randomly across the screen width (some can start off-screen left)
+      const initialX = (screenWidth * (i * 0.2 + Math.random() * 0.1)) - 200;
+      const cloud = this.createCloud(initialX, config.top, config.width, config.height, config.speed, config.opacity);
+      this.clouds.push(cloud);
+      this.container.appendChild(cloud);
+    }
 
     // Green Grass with bushes
     const grass = this.createGrass();
@@ -36,17 +45,19 @@ export class StartBackground {
     this.animate();
   }
 
-  private createCloud(startX: number, top: string, width: string, height: string, speed: number, opacity: number): HTMLElement {
+  private createCloud(initialX: number, top: string, width: string, height: string, speed: number, opacity: number): HTMLElement {
     const cloud = document.createElement('div');
     cloud.className = 'background-cloud';
     cloud.style.position = 'absolute';
     cloud.style.top = top;
-    cloud.style.left = `${startX}px`;
+    cloud.style.left = `${initialX}px`;
     cloud.style.width = width;
     cloud.style.height = height;
     cloud.style.imageRendering = 'pixelated';
+    cloud.style.willChange = 'transform';
+    cloud.style.transform = 'translateZ(0)';
     (cloud as any).speed = speed;
-    (cloud as any).startX = startX;
+    (cloud as any).position = initialX;
 
     // Cloud base
     const base = document.createElement('div');
@@ -196,20 +207,22 @@ export class StartBackground {
     const animateCloud = (cloud: HTMLElement) => {
       if (!cloud) return;
       const speed = (cloud as any).speed;
-      const startX = (cloud as any).startX;
-      let position = parseFloat(cloud.style.left) || startX;
+      let position = (cloud as any).position;
       
       position += speed;
+      
+      // Reset to random position on the left when cloud goes off-screen right
       if (position > window.innerWidth + 200) {
-        position = startX;
+        // Reset to a random position off-screen left
+        position = -200 - Math.random() * 300;
       }
+      
+      (cloud as any).position = position;
       cloud.style.left = `${position}px`;
     };
 
     const loop = () => {
-      if (this.cloud1) animateCloud(this.cloud1);
-      if (this.cloud2) animateCloud(this.cloud2);
-      if (this.cloud3) animateCloud(this.cloud3);
+      this.clouds.forEach(cloud => animateCloud(cloud));
       this.animationFrameId = requestAnimationFrame(loop);
     };
 
