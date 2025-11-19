@@ -3,7 +3,7 @@ declare const THREE: any;
 
 let cube: any;
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 200, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 200, 0.1, 1000); // 75 is the field of view, 200 is the aspect ratio, 0.1 is the near plane, 1000 is the far plane
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, 200);

@@ -65,7 +65,3 @@ npm run serve
 ## Build
 
 The TypeScript files compile to regular JavaScript that can be loaded as script tags. No bundler required.
-
-## Jekyll
-
-Jekyll/Ruby dependencies have been archived in `_jekyll-archive/` directory. The site now runs as a static HTML site without Jekyll.
