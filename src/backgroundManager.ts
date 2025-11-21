@@ -4,6 +4,7 @@ import { StartBackground } from './backgrounds/StartBackground.js';
 import { ProjectsBackground } from './backgrounds/ProjectsBackground.js';
 import { ArtBackground } from './backgrounds/ArtBackground.js';
 import { ConnectBackground } from './backgrounds/ConnectBackground.js';
+import { GameManager } from './game/GameManager.js';
 
 declare const $: any;
 
@@ -13,6 +14,8 @@ export class BackgroundManager {
   private currentLayer: HTMLElement | null = null;
   private nextLayer: HTMLElement | null = null;
   private isTransitioning: boolean = false;
+  private gameManager: GameManager;
+  private currentBackgroundType: 'home' | 'projects' | 'art' | 'connect' | null = null;
 
   constructor(containerId: string) {
     const container = document.getElementById(containerId);
@@ -20,6 +23,7 @@ export class BackgroundManager {
       throw new Error(`Background container with id "${containerId}" not found`);
     }
     this.container = container;
+    this.gameManager = new GameManager();
   }
 
   private createBackgroundLayer(type: 'home' | 'projects' | 'art' | 'connect'): HTMLElement {
@@ -83,7 +87,11 @@ export class BackgroundManager {
         this.currentLayer = this.nextLayer;
         this.nextLayer = null;
         this.currentBackground = (this.currentLayer as any).background;
+        this.currentBackgroundType = type;
         this.isTransitioning = false;
+        
+        // Start/stop game based on background type
+        this.gameManager.startGame(type);
       }, 800); // Match transition duration
     }, 10);
   }
@@ -139,6 +147,10 @@ $(document).ready(function(): void {
     (initialLayer as any).background = initialBackground;
     (bgManager as any).currentLayer = initialLayer;
     (bgManager as any).currentBackground = initialBackground;
+    (bgManager as any).currentBackgroundType = storedBgType;
+    
+    // Start game for initial background
+    (bgManager as any).gameManager.startGame(storedBgType);
   }
   
   // Store background type when switching (so it persists after reload)

@@ -76,7 +76,7 @@ export class ProjectsBackground {
     
     // Create rounded left and right edges using border-radius
     // 50% border-radius on left and right creates a pill/capsule shape
-    moonSurface.style.borderRadius = '50% 50% 0% 0%';
+    moonSurface.style.borderRadius = '80% 80% 0% 0%';
 
     // Texture layer using CSS gradient for a subtle texture effect
     const textureLayer = document.createElement('div');
@@ -236,7 +236,7 @@ export class ProjectsBackground {
     // Place it at 15vh from bottom (50% of 30vh moon surface height)
     moonbase.style.bottom = '30vh';
     moonbase.style.transform = 'translate(-50%, 50%)'; // Center horizontally, align bottom
-    const scale = 5;
+    const scale = 4;
     moonbase.style.transform += ` scale(${scale})`;
     this.container.appendChild(moonbase);
 
