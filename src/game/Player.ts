@@ -258,6 +258,10 @@ export class Player {
       case 'jump':
         maxFrames = this.JUMP_FRAMES;
         break;
+      default:
+        // Fallback to idle if animation type is unexpected
+        maxFrames = this.IDLE_FRAMES;
+        break;
     }
 
     if (this.animationTimer >= 1) {
@@ -352,6 +356,16 @@ export class Player {
     if (this.element && this.element.parentNode) {
       this.element.parentNode.removeChild(this.element);
     }
+  }
+
+  // Get player position for collision detection
+  public getPosition(): { x: number; y: number; width: number; height: number } {
+    return {
+      x: this.x,
+      y: this.y,
+      width: 80,
+      height: 80
+    };
   }
 }
 
