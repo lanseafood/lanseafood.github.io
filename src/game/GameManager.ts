@@ -137,6 +137,14 @@ export class GameManager {
       this.player.destroy();
       this.player = null;
     }
+    // Reset all keys to prevent stuck key states when game resumes
+    this.keys = {
+      left: false,
+      right: false,
+      up: false,
+      down: false,
+      space: false
+    };
     // Clear game container but keep it for reuse
     const gameContainer = document.getElementById('game-container');
     if (gameContainer) {
