@@ -1,5 +1,15 @@
 // Player - Main player sprite with animations and physics
 export class Player {
+    // Get physics values based on current background type
+    getGravity() {
+        return this.backgroundType === 'projects' ? this.LUNAR_GRAVITY : this.EARTH_GRAVITY;
+    }
+    getJumpStrength() {
+        return this.backgroundType === 'projects' ? this.LUNAR_JUMP_STRENGTH : this.EARTH_JUMP_STRENGTH;
+    }
+    getWalkSpeed() {
+        return this.backgroundType === 'projects' ? this.LUNAR_WALK_SPEED : this.EARTH_WALK_SPEED;
+    }
     constructor(container, backgroundType = 'home') {
         this.backgroundType = 'home';
         this.x = 0;
@@ -13,9 +23,16 @@ export class Player {
         this.animationTimer = 0;
         this.groundLevel = 0; // The horizontal plane the player stands on (y position)
         // Physics constants
-        this.GRAVITY = 0.8;
-        this.JUMP_STRENGTH = 18; // Jump strength (positive = up, since y increases upward)
-        this.WALK_SPEED = 5;
+        this.EARTH_GRAVITY = 0.8;
+        this.LUNAR_GRAVITY = 0.8 / 6; // Lunar gravity is ~1/6th of Earth's (~0.133)
+        this.EARTH_JUMP_STRENGTH = 18; // Jump strength on Earth
+        // Lunar jump: slower initial velocity (~12) but reaches higher peak due to 1/6th gravity
+        // Peak height formula: h = v^2 / (2*g)
+        // Earth: 18^2 / (2*0.8) = 202.5
+        // Moon: 12^2 / (2*0.133) = 144 / 0.266 = 541 (much higher!)
+        this.LUNAR_JUMP_STRENGTH = 12; // Slower than Earth (12 vs 18) but higher peak
+        this.EARTH_WALK_SPEED = 5;
+        this.LUNAR_WALK_SPEED = 5 * 0.5; // Lunar walk is slower (~2.5)
         this.VERTICAL_SPEED = 4; // Speed for up/down arrow movement
         this.jumpPressed = false; // Track if jump was just pressed
         // Animation timing (frames per animation cycle)
@@ -111,17 +128,18 @@ export class Player {
         const playerHeight = 80;
         // Max ground level is 30vh (top of grass/lunar surface), not container height
         const maxGroundLevel = window.innerHeight * 0.3; // Top of surface (30vh) so player can stand on top of it
-        // Handle horizontal movement
+        // Handle horizontal movement (slower on lunar surface)
         this.velocityX = 0;
+        const walkSpeed = this.getWalkSpeed();
         if (keys.left) {
-            this.velocityX = -this.WALK_SPEED;
+            this.velocityX = -walkSpeed;
             this.facingRight = false;
             if (this.isGrounded) {
                 this.setAnimation('walk');
             }
         }
         else if (keys.right) {
-            this.velocityX = this.WALK_SPEED;
+            this.velocityX = walkSpeed;
             this.facingRight = true;
             if (this.isGrounded) {
                 this.setAnimation('walk');
@@ -151,8 +169,9 @@ export class Player {
         }
         // Handle jumping - only spacebar (with gravity)
         // Jump always returns to the same ground level it started from
+        // Weaker jump on lunar surface
         if (keys.space && this.isGrounded && !this.jumpPressed) {
-            this.velocityY = this.JUMP_STRENGTH;
+            this.velocityY = this.getJumpStrength();
             this.isGrounded = false;
             this.jumpPressed = true;
             this.setAnimation('jump');
@@ -162,9 +181,10 @@ export class Player {
             this.jumpPressed = false;
         }
         // Apply gravity ONLY when jumping (not grounded)
+        // Use lunar gravity on projects page, Earth gravity on home page
         if (!this.isGrounded) {
             // Apply gravity continuously during jump (decreases upward velocity)
-            this.velocityY -= this.GRAVITY;
+            this.velocityY -= this.getGravity();
             this.setAnimation('jump');
         }
         // Update position
