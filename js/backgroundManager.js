@@ -3,17 +3,20 @@ import { StartBackground } from './backgrounds/StartBackground.js';
 import { ProjectsBackground } from './backgrounds/ProjectsBackground.js';
 import { ArtBackground } from './backgrounds/ArtBackground.js';
 import { ConnectBackground } from './backgrounds/ConnectBackground.js';
+import { GameManager } from './game/GameManager.js';
 export class BackgroundManager {
     constructor(containerId) {
         this.currentBackground = null;
         this.currentLayer = null;
         this.nextLayer = null;
         this.isTransitioning = false;
+        this.currentBackgroundType = null;
         const container = document.getElementById(containerId);
         if (!container) {
             throw new Error(`Background container with id "${containerId}" not found`);
         }
         this.container = container;
+        this.gameManager = new GameManager();
     }
     createBackgroundLayer(type) {
         const layer = document.createElement('div');
@@ -70,7 +73,10 @@ export class BackgroundManager {
                 this.currentLayer = this.nextLayer;
                 this.nextLayer = null;
                 this.currentBackground = this.currentLayer.background;
+                this.currentBackgroundType = type;
                 this.isTransitioning = false;
+                // Start/stop game based on background type
+                this.gameManager.startGame(type);
             }, 800); // Match transition duration
         }, 10);
     }
@@ -120,6 +126,9 @@ $(document).ready(function () {
         initialLayer.background = initialBackground;
         bgManager.currentLayer = initialLayer;
         bgManager.currentBackground = initialBackground;
+        bgManager.currentBackgroundType = storedBgType;
+        // Start game for initial background
+        bgManager.gameManager.startGame(storedBgType);
     }
     // Store background type when switching (so it persists after reload)
     const originalSwitch = bgManager.switchToBackground.bind(bgManager);

@@ -111,19 +111,22 @@ export class StartBackground {
     grass.style.bottom = '0';
     grass.style.left = '0';
     grass.style.right = '0';
-    grass.style.height = '128px';
+    grass.style.height = '30vh';
     grass.style.backgroundColor = '#22c55e';
     grass.style.imageRendering = 'pixelated';
 
     // Bushes
+    // Calculate 15vh in pixels to shift bushes up
+    const shiftUp = window.innerHeight * 0.15;
+    
     const bushConfigs = [
-      { left: '8%', bundle: 'double', bottom: '7px', colors: ['#16a34a', '#15803d'], heights: ['35px', '45px'] },
-      { left: '22%', bundle: 'single', bottom: '90px', colors: ['#15803d'], heights: ['50px'] },
-      { left: '35%', bundle: 'triple', bottom: '40px', colors: ['#166534', '#15803d', '#16a34a'], heights: ['25px', '55px', '35px'] },
-      { left: '48%', bundle: 'double', bottom: '32px', colors: ['#166534', '#4ade80'], heights: ['32px', '40px'] },
-      { left: '62%', bundle: 'single', bottom: '10px', colors: ['#16a34a'], heights: ['40px'] },
-      { left: '75%', bundle: 'triple', bottom: '20px', colors: ['#15803d', '#16a34a', '#4ade80'], heights: ['35px', '60px', '45px'] },
-      { left: '88%', bundle: 'double', bottom: '100px', colors: ['#166534', '#15803d'], heights: ['30px', '40px'] },
+      { left: '8%', bundle: 'double', bottom: `${shiftUp}px`, colors: ['#16a34a', '#15803d'], heights: ['35px', '45px'] },
+      { left: '22%', bundle: 'single', bottom: `${90 + shiftUp}px`, colors: ['#15803d'], heights: ['50px'] },
+      { left: '35%', bundle: 'triple', bottom: `${40 + shiftUp}px`, colors: ['#166534', '#15803d', '#16a34a'], heights: ['25px', '55px', '35px'] },
+      { left: '48%', bundle: 'double', bottom: `${32 + shiftUp}px`, colors: ['#166534', '#4ade80'], heights: ['32px', '40px'] },
+      { left: '62%', bundle: 'single', bottom: `${10 + shiftUp}px`, colors: ['#16a34a'], heights: ['40px'] },
+      { left: '75%', bundle: 'triple', bottom: `${20 + shiftUp}px`, colors: ['#15803d', '#16a34a', '#4ade80'], heights: ['35px', '60px', '45px'] },
+      { left: '88%', bundle: 'double', bottom: `${100 + shiftUp}px`, colors: ['#166534', '#15803d'], heights: ['30px', '40px'] },
     ];
 
     bushConfigs.forEach((config, i) => {
